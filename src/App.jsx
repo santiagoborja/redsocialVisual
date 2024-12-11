@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import {Routing} from "./router/Routing";
 
 function App() {
   return (
     <div className='layout'>
-      <h1>Proyecto red social react</h1>
+      {/*Toda la configuracion de routas */}
+      <Routing/>
     </div>
 
   )
