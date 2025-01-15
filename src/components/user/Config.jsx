@@ -1,18 +1,76 @@
 import React, { useState } from 'react'
 import useAuth from '../../hooks/useAuth'
 import { Global } from '../../helpers/Global';
+import { SerializeForm } from '../../helpers/SerializeForm';
 
 export const Config = () => {
 
-    const { auth } = useAuth();
+    const { auth, setAuth } = useAuth();
 
     const [saved, setSaved] = useState("not_saved");
 
-    const updateUser = () => {
+    const updateUser = async(e) => {
         e.preventDefault();
+        //Token de autentificacion
+        const token = localStorage.getItem("token");
 
-        console.log(auth);
+        //Recoger datos del formularios
+        let newDataUser = SerializeForm(e.target);
 
+        //Borrar propiedad inecesario
+        delete newDataUser.file0;
+
+        //Actualizar en la base de datos.
+
+        const request = await fetch(Global.url + "user/update", {
+            method: "PUT",
+            body: JSON.stringify(newDataUser),
+            headers: {
+                "Content-Type" : "application/json",
+                "Authorization": token
+            }
+        });
+
+        const data = await request.json();
+
+        if(data.status == "success" && data.user){
+            delete data.user.password;
+            setAuth(data.user)
+            setSaved("saved");
+        }else{
+            setSaved("error");
+        }
+
+        //Subida de imagenes
+        const fileInput = document.querySelector("#file");
+
+        if(data.status == "success" && fileInput.files[0]){
+
+            //Recoge imagen a subir
+            const formData = new FormData();
+            formData.append('file0', fileInput.files[0]);
+
+            //Peticion para subir fichero
+            const uploadRquest = await fetch(Global.url+"user/upload",{
+                method: "POST",
+                body: formData,
+                headers: {                    
+                    "Authorization": token
+                }
+            });
+
+            const uploadData = await uploadRquest.json();
+
+            if(uploadData.status == "success" && uploadData.user){
+                delete uploadData.user.password;
+
+                setAuth(uploadData.user);
+                setSaved("saved");
+            }else{
+                setSaved("error");
+            }
+
+        }
     }
 
     return (
@@ -23,9 +81,9 @@ export const Config = () => {
 
             <div className="content__posts">
                 {saved == "saved" ?
-                    <strong className='alert alert-success'> "Usuario Registrado correctamente !!" </strong> : ''}
+                    <strong className='alert alert-success'> "Usuario actualizado correctamente !!" </strong> : ''}
                 {saved == "error" ?
-                    <strong className='alert alert-danger'> "Usuario NO SE HA Registrado !!"</strong> : ''}
+                    <strong className='alert alert-danger'> "Usuario NO SE HA actualizado !!"</strong> : ''}
 
                 <form className='config-form' onSubmit={updateUser}>
 
