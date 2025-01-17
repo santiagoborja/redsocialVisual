@@ -63,50 +63,50 @@ export const UserList = ({ users, getUsers, following, setFollowing,
         <>
             <div className="content__posts">
 
-                {users.map(user => {
+                {users.map(userio => {
 
                     return (
 
-                        <article className="posts__post" key={user._id}>
+                        <article className="posts__post" key={userio._id}>
 
                             <div className="post__container">
 
                                 <div className="post__image-user">
                                     <a href="#" className="post__image-link">
-                                        {user.image == "default.png" && <img src={avatar} className="post__user-image" alt="Foto de perfil" />}
-                                        {user.image != "default.png" && <img src={Global.url + "user/avatar/" + user.image} className="post__user-image" alt="Foto de perfil" />}
+                                        {userio.image == "default.png" && <img src={avatar} className="post__user-image" alt="Foto de perfil" />}
+                                        {userio.image != "default.png" && <img src={Global.url + "user/avatar/" + userio.image} className="post__user-image" alt="Foto de perfil" />}
                                     </a>
                                 </div>
 
                                 <div className="post__body">
 
                                     <div className="post__user-info">
-                                        <a href="#" className="user-info__name">{user.name} {user.surname}</a>
+                                        <a href="#" className="user-info__name">{userio.name} {userio.surname}</a>
                                         <span className="user-info__divider"> | </span>
-                                        <a href="#" className="user-info__create-date">{user.created_at}</a>
+                                        <a href="#" className="user-info__create-date">{userio.created_at}</a>
                                     </div>
 
-                                    <h4 className="post__content">{user.bio}</h4>
+                                    <h4 className="post__content">{userio.bio}</h4>
 
                                 </div>
 
                             </div>
 
                             {/*Solo se ve botones cuando el usuario no esta logiado*/}
-                            {user._id != auth._id &&
+                            {userio._id != auth._id &&
                                 <div className="post__buttons">
 
-                                    {!following.includes(user._id) &&
+                                    {!following.includes(userio._id) &&
                                         <a className="post__button post__button--green"
-                                            onClick={() => follow(user._id)}>
+                                            onClick={() => follow(userio._id)}>
                                             Seguir
                                         </a>
                                     }
 
 
-                                    {following.includes(user._id) &&
+                                    {following.includes(userio._id) &&
                                         <a className="post__button post__button"
-                                            onClick={() => unfollow(user._id)}>
+                                            onClick={() => unfollow(userio._id)}>
                                             Dejar de Seguir
                                         </a>
                                     }
