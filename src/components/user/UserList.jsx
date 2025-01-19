@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import avatar from '../../assets/img/user.png';
 import { Global } from '../../helpers/Global';
 import useAuth from '../../hooks/useAuth';
+import { Link } from 'react-router-dom';
 
-export const UserList = ({ users, getUsers, following, setFollowing, 
-                            page, setPage, more, loading }) => {
+export const UserList = ({ users, getUsers, following, setFollowing,
+    page, setPage, more, loading }) => {
     const { auth } = useAuth();
 
 
@@ -72,18 +73,18 @@ export const UserList = ({ users, getUsers, following, setFollowing,
                             <div className="post__container">
 
                                 <div className="post__image-user">
-                                    <a href="#" className="post__image-link">
+                                    <Link to={'/social/perfil/' + userio._id} className="post__image-link">
                                         {userio.image == "default.png" && <img src={avatar} className="post__user-image" alt="Foto de perfil" />}
                                         {userio.image != "default.png" && <img src={Global.url + "user/avatar/" + userio.image} className="post__user-image" alt="Foto de perfil" />}
-                                    </a>
+                                    </Link>
                                 </div>
 
                                 <div className="post__body">
 
                                     <div className="post__user-info">
-                                        <a href="#" className="user-info__name">{userio.name} {userio.surname}</a>
+                                        <Link to={'/social/perfil/' + userio._id} className="user-info__name">{userio.name} {userio.surname}</Link>
                                         <span className="user-info__divider"> | </span>
-                                        <a href="#" className="user-info__create-date">{userio.created_at}</a>
+                                        <Link to={'/social/perfil/' + userio._id} className="user-info__create-date">{userio.created_at}</Link>
                                     </div>
 
                                     <h4 className="post__content">{userio.bio}</h4>
